@@ -1,7 +1,8 @@
 volumes:
   database_volume:
     name: database_volume
-
+  pg-admin:
+    external: true
 services:
   db:
     image: postgres:14.2-bullseye
@@ -41,3 +42,16 @@ services:
       BASE_URL: http://localhost:5173
     ports:
       - "5173:5173"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    volumes:
+      - pg-admin:/var/lib/pgadmin
+    ports:
+      - 8082:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ok@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: ok
+      PGADMIN_DISABLE_POSTFIX: 1
+    depends_on:
+      - db
