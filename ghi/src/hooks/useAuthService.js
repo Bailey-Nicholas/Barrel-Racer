@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { AuthContext } from '../components/AuthProvider'
-import { signin, signup, signout } from '../services/authService'
+import { signin, signup, signout } from '../services/AuthService'
 
 // This is a custom hook that lets us get access to
 // the info stored in the AuthContext

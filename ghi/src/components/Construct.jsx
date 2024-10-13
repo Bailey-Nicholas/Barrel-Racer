@@ -6,15 +6,7 @@ function Construct(props) {
     return (
         <>
             <h1>Under construction</h1>
-            <h2>Coming on (or before)</h2>
-            <h2>
-                Module: {props.info.module} Week: {props.info.week} Day:{' '}
-                {props.info.day}
-            </h2>
-            <h2>
-                by or <strong>WELL BEFORE</strong> {props.info.hour}:
-                {props.info.min} Cohort Time
-            </h2>
+            <h2><img src="/Users/nicholasbailey/Downloads/Messenger_creation_6442C09A-0F8A-48A9-B0BF-E70551428C79.jpeg" /> </h2>
         </>
     )
 }
