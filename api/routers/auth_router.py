@@ -9,10 +9,12 @@ from fastapi import (
     status,
     APIRouter,
 )
+from sqlalchemy.orm import Session
+
 from queries.user_queries import (
     UserQueries,
 )
-
+from models.database import get_db
 from utils.exceptions import UserDatabaseException
 from models.users import UserRequest, UserResponse
 
@@ -33,11 +35,12 @@ async def signup(
     new_user: UserRequest,
     request: Request,
     response: Response,
-    queries: UserQueries = Depends(),
+    db: Session = Depends(get_db),
 ) -> UserResponse:
     """
     Creates a new user when someone submits the signup form
     """
+    queries = UserQueries(db)
     # Hash the password the user sent us
     hashed_password = hash_password(new_user.password)
 
@@ -73,7 +76,7 @@ async def signin(
     user_request: UserRequest,
     request: Request,
     response: Response,
-    queries: UserQueries = Depends(),
+    db: Session = Depends(get_db),
 ) -> UserResponse:
     """
     Signs the user in when they use the Sign In form
@@ -86,6 +89,7 @@ async def signin(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
         )
+    queries = UserQueries(db)
 
     # Verify the user's password
     if not verify_password(user_request.password, user.password):

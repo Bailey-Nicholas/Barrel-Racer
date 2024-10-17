@@ -1,41 +1,17 @@
-"""
-Pydantic Models for Users.
-"""
-from pydantic import BaseModel, EmailStr, constr
+from sqlalchemy import Column, Integer, String, TIMESTAMP, func
+from sqlalchemy.orm import relationship
+from .database import Base
 
+class User(Base):
+    __tablename__ = "users"
 
-class UserRequest(BaseModel):
-    """
-    Represents a the parameters needed to create a new user
-    """
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), unique=True, nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+    updated_at = Column(TIMESTAMP(timezone=True), onupdate=func.now())
 
-    username: str
-    email: EmailStr
-    password: str
-    first_name: str
-    last_name: str
-
-
-class UserResponse(BaseModel):
-    """
-    Represents a user, with the password not included
-    """
-
-    id: int
-    username: str
-    email: EmailStr
-    first_name: str
-    last_name: str
-
-
-class UserWithPw(BaseModel):
-    """
-    Represents a user with password included
-    """
-
-    id: int
-    username: str
-    email: EmailStr
-    password: str
-    first_name: str
-    last_name: str
+    horses = relationship("Horse", back_populates="owner")
